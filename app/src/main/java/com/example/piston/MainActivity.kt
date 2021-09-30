@@ -1,6 +1,5 @@
 package com.example.piston
 
-import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -24,7 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.data.*
+import com.example.data.entities.Constants
 import com.example.data.entities.Screen
 import com.google.accompanist.pager.ExperimentalPagerApi
 
@@ -47,7 +46,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             Ui()
         }
-
     }
 
 
@@ -55,6 +53,7 @@ class MainActivity : ComponentActivity() {
     @ExperimentalPagerApi
     @Composable
     fun Ui() {
+
         val navController = rememberNavController()
         val navBackStackEntry by navController.currentBackStackEntryAsState()
 
