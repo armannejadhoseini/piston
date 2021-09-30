@@ -28,7 +28,6 @@ import com.example.data.entities.Screen
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 
-
 class MainActivity : ComponentActivity() {
     private val viewModel: ViewModel by viewModels()
 
