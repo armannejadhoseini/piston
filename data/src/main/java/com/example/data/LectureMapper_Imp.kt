@@ -7,6 +7,7 @@ import com.example.myapplication.domain.LectureList
 class LectureMapper_Imp : LectureMapper {
     override fun PracticalListToLectureList(practicalList: List<CourseListModel>, testModelList: List<TestModel>): MutableList<LectureList> {
         val LectureList = mutableListOf<LectureList>()
+        LectureList.clear()
         practicalList.forEachIndexed  { index, item ->
             LectureList.add(
                 LectureList(
@@ -41,6 +42,7 @@ class LectureMapper_Imp : LectureMapper {
 
     override fun TheoryListToLectureList(theoryList: List<TheoryList>, testModelList: List<TestModel>): MutableList<LectureList> {
         val LectureList = mutableListOf<LectureList>()
+        LectureList.clear()
         theoryList.forEachIndexed  { index, item ->
             LectureList.add(
                 LectureList(

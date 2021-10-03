@@ -19,4 +19,5 @@ interface listDao {
     @Query("SELECT * FROM Board_table")
     fun getAllBoradsList(): List<BoardModel>
 
+
 }

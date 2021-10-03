@@ -8,6 +8,7 @@ import com.example.myapplication.domain.BoardModel
 class BoardMapper_Imp: BoardMapper {
     override fun BoardEntityToBoardModel(boardEntityList: List<BoardModel>): List<BoardList> {
         val list = mutableListOf<BoardList>()
+        list.clear()
         boardEntityList.forEach { item->
             list.add(
                 BoardList(

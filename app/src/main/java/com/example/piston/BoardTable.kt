@@ -5,6 +5,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.data.entities.Constants
 import com.example.myapplication.domain.BoardList
 import com.skydoves.landscapist.glide.GlideImage
 
@@ -69,15 +71,20 @@ fun BoardTable(list: List<BoardList>, navController: NavController) {
                     .height(40.dp),
                 horizontalArrangement = Arrangement.End
             ) {
-                    var textInput by remember {
-                        mutableStateOf("  ")
-                    }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(30.dp)
-                    ) {
+                var topBarAction by remember {
+                    mutableStateOf(1)
+                }
+                var textInput by remember {
+                    mutableStateOf("")
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(0.9F)
+                        .height(30.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
 
+                    if (topBarAction == 2) {
                         BasicTextField(
                             modifier = Modifier
                                 .fillMaxWidth(0.9F)
@@ -85,15 +92,16 @@ fun BoardTable(list: List<BoardList>, navController: NavController) {
                                 .padding(end = 2.dp, top = 2.dp),
                             value = textInput,
                             onValueChange = {
+                                boardList = list
                                 textInput = it
-                                boardList = dbTask(textInput, boardList)
+                                boardList = searchTask(textInput, boardList)
                             },
                             cursorBrush = SolidColor(colorResource(id = R.color.textColor_deep_blue)),
                             decorationBox = { innerTextField ->
                                 Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .clip(RoundedCornerShape(15.dp))
+                                        .clip(RoundedCornerShape(2.dp))
                                         .border(
                                             1.dp, colorResource(id = R.color.light_gray),
                                             RoundedCornerShape(15.dp)
@@ -106,28 +114,81 @@ fun BoardTable(list: List<BoardList>, navController: NavController) {
                             }
 
                         )
-                        IconButton(
+                    }
+                    if (topBarAction == 1) {
+                        var showDropDown by remember {
+                            mutableStateOf(false)
+                        }
+                        var textValue by remember {
+                            mutableStateOf(Constants.boardCategory[0])
+                        }
+
+                        Text(modifier = Modifier
+                            .clickable {
+                                showDropDown = showDropDown != true
+                            }
+                            .border(1.dp, Color.LightGray, shape = RoundedCornerShape(10.dp))
+                            .fillMaxWidth(0.4F)
+                            .padding(end = 2.dp, top = 2.dp)
+                            .height(30.dp),
+                            text = textValue,
+                            textAlign = TextAlign.Center,
+                            fontSize = 15.sp,
+                            color = colorResource(id = R.color.textColor_deep_blue))
+
+
+                        DropdownMenu(
                             modifier = Modifier
-                                .width(30.dp)
-                                .height(30.dp),
-                            onClick = {
-                                navController.navigateUp()
+                                .clickable {
+                                    showDropDown = true
+                                },
+                            expanded = showDropDown,
+                            onDismissRequest = {
+                                showDropDown = false
                             },
                         ) {
-                            Icon(
-                                modifier = Modifier
-                                    .width(20.dp)
-                                    .padding(start = 2.dp)
-                                    .clip(RoundedCornerShape(4.dp))
-                                    .background(color = colorResource(id = R.color.courcesBlue))
-                                    .height(20.dp),
-                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_close),
-                                contentDescription = "",
-                                tint = Color.Unspecified
-                            )
-                        }
-                    }
+                            Constants.boardCategory.forEachIndexed { index, item ->
+                                DropdownMenuItem(onClick = {
+                                    boardList = list
+                                    textValue = item
+                                    showDropDown = false
+                                    boardList = categortTask(index, boardList)
 
+                                }) {
+                                    Text(text = item)
+                                }
+                            }
+                        }
+
+
+                    }
+                }
+                IconButton(
+                    modifier = Modifier
+                        .width(30.dp)
+                        .height(30.dp),
+                    onClick = {
+                        if (topBarAction == 1) {
+                            topBarAction = 2
+                        } else {
+                            topBarAction = 1
+                        }
+                        boardList = list
+                    },
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .width(20.dp)
+                            .padding(start = 2.dp)
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(color = colorResource(id = R.color.courcesBlue))
+                            .height(20.dp),
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_close),
+                        contentDescription = "",
+                        tint = Color.Unspecified
+                    )
+
+                }
 
             }
         }
@@ -167,12 +228,25 @@ fun BoardItem(item: BoardList) {
     }
 }
 
-fun dbTask(text: String, list: List<BoardList>): List<BoardList> {
+fun searchTask(text: String, list: List<BoardList>): List<BoardList> {
     val matchedItems = mutableListOf<BoardList>()
     list.forEach { item ->
         if (item.title.contains(text)) {
             matchedItems.add(item)
         }
     }
+    return matchedItems
+}
+
+fun categortTask(type: Int, list: List<BoardList>): List<BoardList> {
+    val matchedItems = mutableListOf<BoardList>()
+    if (type == 0 ) {
+        matchedItems.addAll(list)
+    } else {
+    list.forEach { item ->
+        if (item.type == type) {
+            matchedItems.add(item)
+        }
+    }}
     return matchedItems
 }

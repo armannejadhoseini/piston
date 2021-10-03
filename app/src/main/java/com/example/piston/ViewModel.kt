@@ -78,7 +78,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                 RoomDatabase::class.java, "lecture_content"
             )
                 .createFromAsset("database/database.db")
-                .fallbackToDestructiveMigration()
+                .fallbackToDestructiveMigrationOnDowngrade()
                 .build()
     }
 }

@@ -41,7 +41,6 @@ class MainActivity : ComponentActivity() {
         viewModel.getPracticalListFromDb()
         viewModel.getAllBoardsListFromDb()
 
-
         setContent {
             Ui()
         }
@@ -105,7 +104,7 @@ class MainActivity : ComponentActivity() {
                 composable(Screen.Home.route) { }
                 composable(Screen.Lessons.route) { Lessons(navController) }
                 composable(Screen.Quizes.route) { }
-                composable(Screen.More.route) { }
+                composable(Screen.More.route) { More() }
                 composable(
                     "Lessons_menu/{courses_name}",
                     arguments = listOf(navArgument("courses_name") {
@@ -156,10 +155,6 @@ class MainActivity : ComponentActivity() {
                         )
 
                     }
-                    if (navBackStackEntry?.arguments?.getString("courses_name") == "لیست دروس") {
-                        BoardTable(list = viewModel.getAllBoards(), navController = navController)
-                    }
-
                 }
             }
         }
