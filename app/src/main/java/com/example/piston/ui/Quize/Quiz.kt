@@ -1,7 +1,9 @@
 package com.example.piston.ui.Quize
 
 import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.view.Gravity
+import androidx.annotation.DimenRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
@@ -9,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -16,11 +19,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.*
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnitType
+import androidx.compose.ui.unit.TextUnitType.Companion.Sp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -133,6 +142,15 @@ fun QuizPageManger(showBottom: (Boolean) -> Unit) {
     }
 }
 
+//@Composable
+//@ReadOnlyComposable
+//fun dimensionResource(@DimenRes id: Int): Dp {
+//    val context = LocalContext.current
+//    val density = LocalDensity.current
+//    val pxValue = context.resources.getDimension(id)
+//    return Dp(pxValue / density.density)
+//}
+
 @Composable
 fun FirstTestPage(navController: NavHostController) {
     Column(
@@ -145,20 +163,16 @@ fun FirstTestPage(navController: NavHostController) {
         Box(
             modifier = Modifier
                 .fillMaxWidth(1f)
-                .height(80.dp)
+                .height(60.dp)
+                .wrapContentHeight(align = Alignment.CenterVertically)
         ) {
-            AutoSizeText(
+            Text(
                 text = stringResource(id = R.string.TestCategoryTitle_txt),
                 modifier = Modifier
-                    .fillMaxHeight()
-                    .fillMaxWidth(0.5f)
-                    .align(
-                        Alignment.Center
-                    ),
-                color = textColor,
-                androidText = {
-                    it.setLines(1)
-                }
+                    .align(Alignment.Center),
+                color = colorResource(id = R.color.textColor_deep_blue),
+                fontSize = dimensionResource(id = R.dimen.font_header_2).value.sp,
+                fontFamily = FontFamily(Font(R.font.shabnam))
             )
         }
         ElementaryTestBanner {
@@ -176,7 +190,7 @@ fun ElementaryTestBanner(onPageChange: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(1.8f)
+            .height(200.dp)
             .padding(4.dp),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -186,6 +200,29 @@ fun ElementaryTestBanner(onPageChange: () -> Unit) {
                 onPageChange()
             }) {
             Row(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(3f)
+                        .padding(8.dp)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.BaseTestTitle),
+                        fontFamily = FontFamily(Font(R.font.shabnam)),
+                        fontSize = dimensionResource(id = R.dimen.font_header_2).value.sp,
+                        color = colorResource(id = R.color.textColor_deep_blue),
+                        modifier = Modifier.align( Alignment.End)
+                    )
+
+                    AutoSizeText(
+                        text = stringResource(id = R.string.course_quiz_body_text),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(5f),
+                        color = colorResource(id = R.color.textColor_deep_blue),
+                        gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                    )
+                }
                 Image(
                     painter = painterResource(id = R.drawable.base_test_img),
                     contentDescription = null,
@@ -194,29 +231,7 @@ fun ElementaryTestBanner(onPageChange: () -> Unit) {
                         .weight(2.5f),
                     contentScale = ContentScale.Crop
                 )
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(3f)
-                        .padding(8.dp)
-                ) {
-                    AutoSizeText(
-                        text = "آزمون مقدماتی",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1.5f),
-                        color = textColor,
-                        gravity = Gravity.START or Gravity.CENTER_VERTICAL
-                    )
-                    AutoSizeText(
-                        text = stringResource(id = R.string.course_quiz_body_text),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(5f),
-                        color = textColor,
-                        gravity = Gravity.START or Gravity.CENTER_VERTICAL
-                    )
-                }
+
             }
         }
 
@@ -228,7 +243,7 @@ fun AdvancedTestBanner(onPageChange: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(1.8f)
+            .height(200.dp)
             .padding(4.dp),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -240,29 +255,6 @@ fun AdvancedTestBanner(onPageChange: () -> Unit) {
                 .clickable {
                     onPageChange()
                 }) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(3f)
-                        .padding(8.dp)
-                ) {
-                    AutoSizeText(
-                        text = stringResource(id = R.string.ExamTestTitle),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1.5f),
-                        color = textColor,
-                        gravity = Gravity.START or Gravity.CENTER_VERTICAL
-                    )
-                    AutoSizeText(
-                        text = stringResource(id = R.string.course_exam_body_string),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(5f),
-                        color = textColor,
-                        gravity = Gravity.START or Gravity.CENTER_VERTICAL
-                    )
-                }
                 Image(
                     painter = painterResource(id = R.drawable.test_img),
                     contentDescription = null,
@@ -271,6 +263,30 @@ fun AdvancedTestBanner(onPageChange: () -> Unit) {
                         .weight(2.5f),
                     contentScale = ContentScale.Crop
                 )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(3f)
+                        .padding(8.dp)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.ExamTestTitle),
+                        fontFamily = FontFamily(Font(R.font.shabnam)),
+                        fontSize = dimensionResource(id = R.dimen.font_header_2).value.sp,
+                        color = colorResource(id = R.color.textColor_deep_blue),
+                        modifier = Modifier.align( Alignment.End)
+                    )
+                    AutoSizeText(
+                        text = stringResource(id = R.string.course_exam_body_string),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(5f),
+                        color = colorResource(id = R.color.textColor_deep_blue),
+                        gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                    )
+                }
+
 
             }
         }
