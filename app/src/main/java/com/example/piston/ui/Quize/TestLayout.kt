@@ -253,7 +253,7 @@ fun QuestionLayout(
                         text = page.title,
                         textAlign = TextAlign.End,
                         color = colorResource(id = R.color.textColors),
-                        fontSize = dimensionResource(id = R.dimen.font_header_2).value.sp,
+                        fontSize = dimensionResource(id = R.dimen.font_header_3).value.sp,
                         fontFamily = FontFamily(Font(R.font.shabnam)),
                     )
                 }
@@ -331,6 +331,10 @@ fun QuestionLayout(
                                     fontFamily = FontFamily(Font(R.font.shabnam))
                                 )
                             }
+                            Spacer(
+                                modifier = Modifier
+                                    .width(8.dp)
+                            )
                         }
                     }
 
