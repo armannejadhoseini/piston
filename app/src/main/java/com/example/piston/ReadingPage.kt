@@ -384,7 +384,6 @@ fun QuestionTab(
                         textAlign = TextAlign.End
                     )
 
-
                 }
             }
         }
