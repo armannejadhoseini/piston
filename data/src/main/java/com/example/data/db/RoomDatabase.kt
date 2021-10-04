@@ -16,7 +16,7 @@ import com.example.data.entities.QuizPercentEntity
     QuizPercentEntity::class,
     QuizEntity::class,
     ExamEntity::class,
-), version = 2)
+), version = 3)
 abstract class RoomDatabase: RoomDatabase() {
     abstract fun listDao(): listDao
 }

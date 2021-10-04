@@ -36,17 +36,19 @@ fun LessonsList(
 
     Scaffold(
         topBar = {
-            TopAppBar(backgroundColor = Color.White) {
+            TopAppBar(backgroundColor = Color.White,
+            elevation = 0.dp) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
 
 
+
                     IconButton(
                         modifier = Modifier
-                            .width(30.dp)
-                            .height(30.dp),
+                            .width(40.dp)
+                            .height(40.dp),
                         onClick = {
                             navController.navigateUp()
                         },
@@ -54,11 +56,11 @@ fun LessonsList(
                         ) {
                         Icon(
                             modifier = Modifier
-                                .width(20.dp)
+                                .width(25.dp)
                                 .padding(start = 2.dp)
                                 .clip(RoundedCornerShape(4.dp))
                                 .background(color = colorResource(id = R.color.courcesBlue))
-                                .height(20.dp),
+                                .height(25.dp),
                             imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
                             contentDescription = "",
                             tint = Color.Unspecified
@@ -67,7 +69,8 @@ fun LessonsList(
                     }
 
                     Text(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(top = 5.dp),
                         text = "$item_name",
                         textAlign = TextAlign.End,
                         fontSize = 20.sp,
@@ -115,7 +118,7 @@ fun SubMenu(
                 navController.navigate("reading_page/${item.id - 1}/${type}")
             }
             .padding(4.dp, 4.dp, 4.dp, padding)
-            .height(100.dp),
+            .height(120.dp),
         elevation = 3.dp
     ) {
         Row(
@@ -129,18 +132,18 @@ fun SubMenu(
             ) {
                 Image(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .scale(0.6F)
-                        .height(80.dp),
+                        .width(65.dp)
+                        .padding(top = 5.dp , start = 20.dp, bottom = 20.dp)
+                        .height(65.dp),
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_silver_medal),
                     contentDescription = "",
                     contentScale = ContentScale.FillBounds
                 )
 
                 Text(
-                    text = "کوییز | دروس", modifier = Modifier
+                    text = "کوییز   |   دوره", modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 7.dp)
+                        .padding(start = 7.dp, bottom = 5.dp)
                         .width(20.dp)
                 )
             }
@@ -148,19 +151,19 @@ fun SubMenu(
             Text(
                 modifier = Modifier
                     .fillMaxWidth(0.7F)
-                    .align(Alignment.CenterVertically)
+                    .padding(end = 5.dp)
+                    .align(Alignment.CenterVertically).padding(end = 4.dp)
                     .height(30.dp),
                 text = item.title,
-                textAlign = TextAlign.Center,
-                fontSize = 20.sp,
+                textAlign = TextAlign.End,
+                fontSize = 18.sp,
                 color = colorResource(id = R.color.textColor_deep_blue),
             )
 
             GlideImage(modifier = Modifier.fillMaxWidth(0.9F)
-                .padding(top = 15.dp)
-                .height(70.dp),
+                .height(120.dp),
                 imageModel = item.image,
-                contentScale = ContentScale.FillBounds
+                contentScale = ContentScale.Fit
             )
 
 

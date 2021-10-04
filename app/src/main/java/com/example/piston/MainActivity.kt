@@ -107,7 +107,7 @@ class MainActivity : ComponentActivity() {
 
         ) {
             NavHost(navController = navController, startDestination = Screen.Home.route) {
-                composable(Screen.Home.route) { Home() }
+                composable(Screen.Home.route) {  }
                 composable(Screen.Lessons.route) { Lessons(navController) }
                 composable(Screen.Quizes.route) {
                     QuizPageManger(showBottom = showBottomClick)
@@ -169,10 +169,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    @Composable
-    fun Home() {
-
     }
 }

@@ -35,38 +35,51 @@ import com.skydoves.landscapist.glide.GlideImage
 @ExperimentalPagerApi
 @Composable
 fun ReadingPage(navController: NavController, index: Int, list: List<LectureList>) {
-
-    HorizontalPager(state = rememberPagerState(pageCount = 8)) {
-        val page = this.currentPage
-        Log.d("TAG", "ReadingPage: $page")
-        Column {
-            PageHeader(navController, page)
-            if (page == 3) {
-                QuestionTab(
-                    list[index].quiz_title1,
-                    list[index].image,
-                    list[index].quiz1_answer1,
-                    list[index].quiz1_answer2,
-                    list[index].quiz1_answer3,
-                    list[index].quiz1_answer4,
-                    list[index].quiz1_true_answer
-                )
-            }
-            if (page == 6) {
-                QuestionTab(
-                    list[index].quiz_title2,
-                    list[index].image,
-                    list[index].quiz2_answer1,
-                    list[index].quiz2_answer2,
-                    list[index].quiz2_answer3,
-                    list[index].quiz2_answer4,
-                    list[index].quiz2_true_answer
-                )
-            } else {
-                LectureTab(index, list, page)
+    var page by remember {
+        mutableStateOf(0)
+    }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                backgroundColor = Color.White,
+                elevation = 0.dp
+            ) {
+                PageHeader(navController = navController, page = page)
             }
         }
+    ) {
 
+        HorizontalPager(state = rememberPagerState(pageCount = 8)) {
+            page = this.currentPage
+            Log.d("TAG", "ReadingPage: $page")
+            Column {
+                if (page == 3) {
+                    QuestionTab(
+                        list[index].quiz_title1,
+                        list[index].image,
+                        list[index].quiz1_answer1,
+                        list[index].quiz1_answer2,
+                        list[index].quiz1_answer3,
+                        list[index].quiz1_answer4,
+                        list[index].quiz1_true_answer
+                    )
+                }
+                if (page == 6) {
+                    QuestionTab(
+                        list[index].quiz_title2,
+                        list[index].image,
+                        list[index].quiz2_answer1,
+                        list[index].quiz2_answer2,
+                        list[index].quiz2_answer3,
+                        list[index].quiz2_answer4,
+                        list[index].quiz2_true_answer
+                    )
+                } else {
+                    LectureTab(index, list, page)
+                }
+            }
+
+        }
     }
 }
 
@@ -75,14 +88,13 @@ fun ReadingPage(navController: NavController, index: Int, list: List<LectureList
 fun PageHeader(navController: NavController, page: Int) {
     Row(
         modifier = Modifier
-            .padding(bottom = 20.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
         IconButton(
             modifier = Modifier
-                .width(30.dp)
-                .height(30.dp),
+                .width(40.dp)
+                .height(40.dp),
             onClick = {
                 navController.navigateUp()
             },
@@ -90,16 +102,18 @@ fun PageHeader(navController: NavController, page: Int) {
             ) {
             Icon(
                 modifier = Modifier
-                    .width(20.dp)
+                    .width(25.dp)
                     .padding(start = 2.dp)
                     .clip(RoundedCornerShape(4.dp))
                     .background(color = colorResource(id = R.color.courcesBlue))
-                    .height(20.dp),
+                    .height(25.dp),
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
                 contentDescription = "",
                 tint = Color.Unspecified
             )
+
         }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth(0.9F)
@@ -111,38 +125,38 @@ fun PageHeader(navController: NavController, page: Int) {
             var size: Dp
             Constants.reading_list.forEach { index ->
                 if (page + 1 == index) {
-                    color = colorResource(id = R.color.layout_background)
+                    color = Color(145, 178, 255)
                     size = 20.dp
                 } else {
                     size = 15.dp
                 }
-
-                Button(
+                Card(
                     modifier = Modifier
                         .clip(RoundedCornerShape(4.dp))
                         .padding(start = 7.dp)
                         .width(size)
-                        .height(size),
-                    onClick = { /*TODO*/ },
-                    colors = ButtonDefaults.buttonColors(color),
-                )
-                {
+                        .height(size)
+
+                ) {
                     Text(
                         modifier = Modifier
-                            .width(15.dp)
-                            .height(15.dp),
+                            .background(color)
+                            .width(size)
+                            .height(size),
                         text = "$index",
-                        fontSize = 1.sp,
-                        color = colorResource(id = R.color.trikyRed)
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center,
+                        color = colorResource(id = R.color.white)
                     )
                 }
             }
+
         }
         if (page == 7) {
             IconButton(
                 modifier = Modifier
-                    .width(30.dp)
-                    .height(30.dp),
+                    .width(40.dp)
+                    .height(40.dp),
                 onClick = {
                     navController.navigateUp()
                 },
@@ -150,11 +164,11 @@ fun PageHeader(navController: NavController, page: Int) {
                 ) {
                 Icon(
                     modifier = Modifier
-                        .width(20.dp)
+                        .width(25.dp)
                         .padding(start = 2.dp)
                         .clip(RoundedCornerShape(4.dp))
                         .background(color = colorResource(id = R.color.courcesBlue))
-                        .height(20.dp),
+                        .height(25.dp),
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_check),
                     contentDescription = "",
                     tint = Color.Unspecified
@@ -180,21 +194,25 @@ fun LectureTab(index: Int, list: List<LectureList>, page: Int) {
             .fillMaxHeight()
             .fillMaxWidth()
     ) {
-        GlideImage(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(150.dp),
-            imageModel = list[index].image,
-            contentScale = ContentScale.Inside
-        )
+        Card(elevation = 4.dp) {
+
+
+            GlideImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp),
+                imageModel = list[index].image,
+                contentScale = ContentScale.Inside
+            )
+        }
 
         Row(modifier = Modifier.padding(vertical = 20.dp)) {
             IconButton(
                 modifier = Modifier
                     .height(30.dp)
                     .padding(10.dp, 0.dp, 0.dp, 0.dp)
-                    .width(60.dp)
-                    .clip(RoundedCornerShape(10.dp))
+                    .width(65.dp)
+                    .clip(RoundedCornerShape(4.dp))
                     .background(colorResource(id = R.color.recyclerEdgeBlueColor)),
                 onClick = { /*TODO*/ },
             ) {
@@ -267,13 +285,15 @@ fun QuestionTab(
     true_answer: Int
 ) {
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.End) {
-        GlideImage(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(150.dp),
-            imageModel = image,
-            contentScale = ContentScale.Inside
-        )
+        Card(elevation = 4.dp) {
+            GlideImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp),
+                imageModel = image,
+                contentScale = ContentScale.Inside
+            )
+        }
 
         Text(
             modifier = Modifier
@@ -281,7 +301,7 @@ fun QuestionTab(
                 .padding(horizontal = 20.dp, vertical = 30.dp),
             text = title,
             color = colorResource(id = R.color.textColors),
-            fontSize = 15.sp,
+            fontSize = 20.sp,
             textAlign = TextAlign.End
         )
 
@@ -289,11 +309,17 @@ fun QuestionTab(
             mutableStateOf(true)
         }
         var trueColor by remember {
-            mutableStateOf(R.color.white)
+            mutableStateOf(R.color.white_deep)
+        }
+        var textColor by remember {
+            mutableStateOf(R.color.textColor_deep_blue)
+        }
+        var textColorTrue by remember {
+            mutableStateOf(R.color.textColor_deep_blue)
         }
         listOf(1, 2, 3, 4).forEachIndexed { index, item ->
             var color by remember {
-                mutableStateOf(R.color.white)
+                mutableStateOf(R.color.white_deep)
             }
             var selected by remember {
                 mutableStateOf(false)
@@ -312,30 +338,12 @@ fun QuestionTab(
                 elevation = 4.dp
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.End,
+
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        modifier = Modifier
-                            .padding(end = 4.dp)
-                            .padding(vertical = 10.dp)
-                            .fillMaxWidth(0.90F),
-                        text = when (item) {
-                            1 -> answer1
-                            2 -> answer2
-                            3 -> answer3
-                            4 -> answer4
-
-                            else -> answer1
-                        },
-                        color = colorResource(
-                            id = R.color.textColors
-                        ),
-                        textAlign = TextAlign.End
-                    )
                     RadioButton(
                         modifier = Modifier
-                            .padding(end = 4.dp)
+                            .padding(start = 4.dp)
                             .layoutId(item - 1),
                         selected = selected,
                         onClick = {
@@ -344,16 +352,38 @@ fun QuestionTab(
                                 color = R.color.isDoneGreen
                                 selectable = false
                                 trueColor = R.color.isDoneGreen
+                                textColorTrue = R.color.isDoneGreen
                             } else {
                                 selected = true
                                 color = R.color.trikyRed
                                 selectable = false
                                 trueColor = R.color.isDoneGreen
-
+                                textColorTrue = R.color.isDoneGreen
                             }
                         },
-                        enabled = selectable
+                        enabled = selectable,
+                        colors = RadioButtonDefaults.colors(colorResource(id = color))
                     )
+                    Text(
+                        modifier = Modifier
+                            .padding(horizontal = 4.dp)
+                            .padding(vertical = 10.dp)
+                            .fillMaxWidth(0.95F),
+                        text = when (item) {
+                            1 -> answer1
+                            2 -> answer2
+                            3 -> answer3
+                            4 -> answer4
+
+                            else -> answer1
+                        },
+                        color = when (item - 1) {
+                            true_answer -> colorResource(id = textColorTrue)
+                            else -> colorResource(id = textColor)
+                        },
+                        textAlign = TextAlign.End
+                    )
+
 
                 }
             }
