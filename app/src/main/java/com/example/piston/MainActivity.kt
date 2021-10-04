@@ -101,10 +101,13 @@ class MainActivity : ComponentActivity() {
 
         ) {
             NavHost(navController = navController, startDestination = Screen.Home.route) {
-                composable(Screen.Home.route) { }
+                composable(Screen.Home.route) { Home() }
                 composable(Screen.Lessons.route) { Lessons(navController) }
                 composable(Screen.Quizes.route) { }
-                composable(Screen.More.route) { More() }
+                composable(Screen.More.route) { More(navController) }
+                composable("aboutUs") {
+                    aboutUs(navController)
+                }
                 composable(
                     "Lessons_menu/{courses_name}",
                     arguments = listOf(navArgument("courses_name") {
@@ -159,4 +162,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+    @Composable
+    fun Home() {}
 }

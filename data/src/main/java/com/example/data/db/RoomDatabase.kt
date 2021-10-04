@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
     CourseListEntity::class,
     TheoryListEntity::class,
     BoardEntity::class
-), version = 3)
+), version = 2)
 abstract class RoomDatabase: RoomDatabase() {
     abstract fun listDao(): listDao
 }
