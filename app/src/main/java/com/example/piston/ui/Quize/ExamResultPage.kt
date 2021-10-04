@@ -10,6 +10,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
@@ -247,27 +249,30 @@ fun Body(
         ShowPercent(
             percent = percent, title = "$correctAnswerCount" + " درست از 30",
             modifier = Modifier
-                .fillMaxWidth(0.6f)
-                .aspectRatio(1f)
+                .size(210.dp)
                 .align(CenterHorizontally),
             result!!.color
         )
-        ShowResultText(
-            Modifier
-                .fillMaxWidth()
-                .weight(3f)
-                .padding(start = 16.dp, end = 16.dp),
-            result
-        )
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .weight(3f), contentAlignment = BottomCenter) {
+            ShowResultText(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp),
+                result
+            )
+        }
+
         CustomButton(
             title = stringResource(id = R.string.TryAgainTest_btn),
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
+                .height(60.dp)
                 .padding(start = 32.dp, end = 32.dp, top = 16.dp, bottom = 4.dp),
             shape = RoundedCornerShape(8.dp),
             backColor = colorResource(
-                id = R.color.textColors
+                id = R.color.textColor_deep_blue
             ),
             textColor = Color.White,
             onClick = {
@@ -278,8 +283,8 @@ fun Body(
             title = stringResource(id = R.string.ShowTrueAnswer_txt), modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 32.dp, end = 32.dp, top = 4.dp, bottom = 16.dp)
-                .weight(1f), shape = RoundedCornerShape(8.dp), backColor = colorResource(
-                id = R.color.textColor_deep_blue
+                .height(60.dp), shape = RoundedCornerShape(8.dp), backColor = colorResource(
+                id = R.color.light_blue
             ), textColor = Color.White
         ) {
             var quizResultJson = Gson().toJson(quizResult)
@@ -337,33 +342,44 @@ fun CustomButton(
 fun ShowResultText(modifier: Modifier, result: Result) {
     Column(modifier = modifier) {
         R.string.test_result_title2_weak
-        AutoSizeText(
-            text = stringResource(id = result.title1), modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(), color = colorResource(
+        Text(
+            text = stringResource(id = result.title1),
+            modifier = Modifier
+                .fillMaxWidth(),
+            color = colorResource(
                 id = result.color
-            )
-        ) {
-            it.setLines(1)
-        }
-        AutoSizeText(
-            text = stringResource(id = result.title2), modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(), color = colorResource(
+            ),
+            textAlign = TextAlign.Center,
+            fontFamily = FontFamily(Font(R.font.shabnam)),
+            fontSize = 22.sp
+        )
+        Spacer(modifier = Modifier.padding(8.dp))
+        Text(
+            text = stringResource(id = result.title2),
+            modifier = Modifier
+                .fillMaxWidth(),
+            color = colorResource(
                 id = R.color.textColor_deep_blue
-            )
-        ) {
-            it.setLines(1)
-        }
-        AutoSizeText(
+            ),
+            textAlign = TextAlign.Center,
+            fontFamily = FontFamily(Font(R.font.shabnam)),
+            fontSize = 22.sp
+        )
+        Spacer(modifier = Modifier.padding(8.dp))
+        Text(
             text = stringResource(
                 id = result.bodyText
-            ), modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(), color = colorResource(
+            ),
+            modifier = Modifier
+                .fillMaxWidth(),
+            color = colorResource(
                 id = R.color.textColors
-            )
+            ),
+            fontSize = 15.sp,
+            textAlign = TextAlign.Center,
+            fontFamily = FontFamily(Font(R.font.shabnam))
         )
+        Spacer(modifier = Modifier.padding(8.dp))
     }
 }
 
