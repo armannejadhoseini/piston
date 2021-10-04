@@ -263,13 +263,13 @@ fun Body(
                 result
             )
         }
-
+        Spacer(modifier = Modifier.padding(4.dp))
         CustomButton(
             title = stringResource(id = R.string.TryAgainTest_btn),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
-                .padding(start = 32.dp, end = 32.dp, top = 16.dp, bottom = 4.dp),
+                .height(50.dp)
+                .padding(horizontal = 32.dp),
             shape = RoundedCornerShape(8.dp),
             backColor = colorResource(
                 id = R.color.textColor_deep_blue
@@ -279,17 +279,19 @@ fun Body(
                 navController.popBackStack()
             }
         )
+        Spacer(modifier = Modifier.padding(4.dp))
         CustomButton(
             title = stringResource(id = R.string.ShowTrueAnswer_txt), modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 32.dp, end = 32.dp, top = 4.dp, bottom = 16.dp)
-                .height(60.dp), shape = RoundedCornerShape(8.dp), backColor = colorResource(
+                .padding(horizontal = 32.dp)
+                .height(50.dp), shape = RoundedCornerShape(8.dp), backColor = colorResource(
                 id = R.color.light_blue
             ), textColor = Color.White
         ) {
             var quizResultJson = Gson().toJson(quizResult)
             navController.navigate(route = "${ExamQuizPages.ShowTrueAnswersName}/$quizResultJson")
         }
+        Spacer(modifier = Modifier.padding(4.dp))
     }
 }
 
@@ -353,7 +355,7 @@ fun ShowResultText(modifier: Modifier, result: Result) {
             fontFamily = FontFamily(Font(R.font.shabnam)),
             fontSize = 22.sp
         )
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(4.dp))
         Text(
             text = stringResource(id = result.title2),
             modifier = Modifier
@@ -365,7 +367,7 @@ fun ShowResultText(modifier: Modifier, result: Result) {
             fontFamily = FontFamily(Font(R.font.shabnam)),
             fontSize = 22.sp
         )
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(4.dp))
         Text(
             text = stringResource(
                 id = result.bodyText
@@ -379,7 +381,7 @@ fun ShowResultText(modifier: Modifier, result: Result) {
             textAlign = TextAlign.Center,
             fontFamily = FontFamily(Font(R.font.shabnam))
         )
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.padding(4.dp))
     }
 }
 
