@@ -67,11 +67,21 @@ fun Lessons(navController: NavController) {
 
         LazyColumn {
             items(lessons_list) { item ->
-                if (item.id == 2) {
-                    ItemsColumn(item = item, 80.dp, navController)
-                } else {
-                    ItemsColumn(item = item, 0.dp, navController)
+                if (item.id%2 == 0){
+                    if (item.id == 2) {
+                        ItemsColumn(item = item, 80.dp, navController)
+                    } else {
+                        ItemsColumn(item = item, 0.dp, navController)
+                    }
                 }
+                else {
+                    if (item.id == 2) {
+                        ItemsColumn2(item = item, 80.dp, navController)
+                    } else {
+                        ItemsColumn2(item = item, 0.dp, navController)
+                    }
+                }
+
             }
         }
 
@@ -138,18 +148,16 @@ fun ItemsColumn(item: lessons_item, padding: Dp, navController: NavController) {
 }
 @Composable
 fun ItemsColumn2(item: lessons_item, padding: Dp, navController: NavController) {
-
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(7.dp, 7.dp, 7.dp, padding)
+            .padding(7.dp, 15.dp, 7.dp, padding)
             .height(180.dp)
             .clickable {
                 navController.navigate("Lessons_menu/${item.cat}")
             },
-        elevation = 10.dp,
-        shape = RoundedCornerShape(30.dp),
+        elevation = 5.dp,
+        shape = RoundedCornerShape(10.dp),
 
         ) {
 
@@ -158,7 +166,30 @@ fun ItemsColumn2(item: lessons_item, padding: Dp, navController: NavController) 
                 .fillMaxWidth()
                 .height(200.dp)
         ) {
-
+            Column(
+                Modifier
+                    .fillMaxWidth(0.55F)
+                    .height(180.dp)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 20.dp, top = 10.dp)
+                        .height(40.dp), text = item.title,
+                    textAlign = TextAlign.End,
+                    color = colorResource(id = R.color.textColor_deep_blue),
+                    fontSize = 20.sp
+                )
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 7.dp)
+                        .height(140.dp), text = stringResource(id = item.body),
+                    textAlign = TextAlign.End,
+                    color = colorResource(id = R.color.textColor_deep_blue),
+                    fontSize = 12.sp
+                )
+            }
             Image(
                 modifier = Modifier
                     .width(180.dp)
@@ -167,29 +198,6 @@ fun ItemsColumn2(item: lessons_item, padding: Dp, navController: NavController) 
                 contentScale = ContentScale.FillBounds,
                 painter = painterResource(id = item.vector)
             )
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .height(180.dp)
-            ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(40.dp), text = item.title,
-                    textAlign = TextAlign.Center,
-                    color = colorResource(id = R.color.textColor_deep_blue),
-                    fontSize = 20.sp
-                )
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(2.dp)
-                        .height(140.dp), text = stringResource(id = item.body),
-                    textAlign = TextAlign.End,
-                    color = colorResource(id = R.color.textColor_deep_blue),
-                    fontSize = 10.sp
-                )
-            }
         }
     }
 }

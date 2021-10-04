@@ -143,7 +143,11 @@ fun PageHeader(navController: NavController, page: Int) {
                             .background(color)
                             .width(size)
                             .height(size),
-                        text = "$index",
+                        text = when(index) {
+                                           4-> "?"
+                                            7-> "?"
+                            else -> index.toString()
+                                           },
                         fontSize = 12.sp,
                         textAlign = TextAlign.Center,
                         color = colorResource(id = R.color.white)

@@ -47,8 +47,8 @@ fun BoardTable(list: List<BoardList>, navController: NavController) {
              ) {
                  IconButton(
                      modifier = Modifier
-                         .width(30.dp)
-                         .height(30.dp),
+                         .width(40.dp)
+                         .height(40.dp),
                      onClick = {
                          navController.navigateUp()
                      },
@@ -56,15 +56,16 @@ fun BoardTable(list: List<BoardList>, navController: NavController) {
                      ) {
                      Icon(
                          modifier = Modifier
-                             .width(20.dp)
+                             .width(25.dp)
                              .padding(start = 2.dp)
                              .clip(RoundedCornerShape(4.dp))
                              .background(color = colorResource(id = R.color.courcesBlue))
-                             .height(20.dp),
+                             .height(25.dp),
                          imageVector = ImageVector.vectorResource(id = R.drawable.ic_back),
                          contentDescription = "",
                          tint = Color.Unspecified
                      )
+
                  }
 
                  Row(
