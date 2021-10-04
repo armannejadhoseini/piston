@@ -136,14 +136,15 @@ fun TopLayout(
             modifier = Modifier
                 .size(30.dp)
                 .align(CenterVertically),
-            shape = RoundedCornerShape(8.dp),
-            backgroundColor = Color(150, 150, 250)
+            shape = RoundedCornerShape(4.dp),
+            backgroundColor = colorResource(id = R.color.light_blue)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
+                    .padding(2.dp)
                     .clickable { onBackPress() }
             )
         }
@@ -164,8 +165,8 @@ fun TopLayout(
             modifier = Modifier
                 .width(80.dp)
                 .height(40.dp)
-                .align(CenterVertically), backgroundColor = Color(150, 150, 250),
-            shape = RoundedCornerShape(8.dp)
+                .align(CenterVertically), backgroundColor = colorResource(id = R.color.light_blue),
+            shape = RoundedCornerShape(4.dp)
         ) {
             Box(modifier = Modifier
                 .fillMaxSize()
@@ -224,35 +225,27 @@ fun TimerLayout(
             onCancel(timer)
         }
     }
-
-    Card(
+    Row(
         modifier = Modifier
             .fillMaxHeight()
-            .fillMaxWidth(0.5f)
+            .width(80.dp)
             .padding(start = 4.dp, bottom = 4.dp, top = 4.dp, end = 4.dp),
-
-        shape = RoundedCornerShape(16.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            AutoSizeText(
-                text = minute.toString(), modifier = Modifier
-                    .weight(2f)
-                    .fillMaxHeight(), color = Color.Gray
-            )
-            AutoSizeText(
-                text = ":", modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(), color = Color.Gray
-            )
-            AutoSizeText(
-                text = second.toString(), modifier = Modifier
-                    .weight(2f)
-                    .fillMaxHeight(), color = Color.Gray
-            )
-        }
+        AutoSizeText(
+            text = minute.toString(), modifier = Modifier
+                .weight(2f)
+                .fillMaxHeight(), color = colorResource(id = R.color.textColor_deep_blue)
+        )
+        AutoSizeText(
+            text = ":", modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight(), color = colorResource(id = R.color.textColor_deep_blue)
+        )
+        AutoSizeText(
+            text = second.toString(), modifier = Modifier
+                .weight(2f)
+                .fillMaxHeight(), color = colorResource(id = R.color.textColor_deep_blue)
+        )
     }
 }
 

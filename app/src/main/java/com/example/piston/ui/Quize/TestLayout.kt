@@ -7,6 +7,7 @@ import android.widget.ImageView
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -46,11 +47,13 @@ fun TestLayout(
     selectedAnswerOnChange: (ArrayList<Int>) -> Unit,
     selectable: Boolean = true
 ) {
+    val state = rememberPagerState(pageCount = quizList.size)
     Column(modifier = modifier) {
-        var state = rememberPagerState(pageCount = quizList.size)
+
         var choose by remember {
             mutableStateOf(0)
         }
+
         var scope = rememberCoroutineScope()
         PagerLayout(
             modifier = Modifier
@@ -87,7 +90,7 @@ fun initSelectedList(size: Int): ArrayList<Int> {
 @Composable
 fun PagerLayout(
     modifier: Modifier,
-    state: PagerState,
+    state:PagerState,
     list: List<QuizModel>,
     showCorrectAnswer: Boolean,
     selectedAnswerList: List<Int>,
@@ -105,34 +108,27 @@ fun PagerLayout(
             modifier = Modifier
                 .fillMaxSize()
                 .graphicsLayer {
-                    val pageOffset = calculateCurrentOffsetForPage(index).absoluteValue
-                    alpha = lerp(
-                        start = 0f,
-                        stop = 1f,
-                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                    )
-                    lerp(
-                        start = 0.85f,
-                        stop = 1f,
-                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                    ).also {
-                        this.scaleX = it
-                        this.scaleY = it
-                    }
+//                    val pageOffset = calculateCurrentOffsetForPage(index).absoluteValue
+//                    alpha = lerp(
+//                        start = 0f,
+//                        stop = 1f,
+//                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+//                    )
+//                    lerp(
+//                        start = 0.85f,
+//                        stop = 1f,
+//                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+//                    ).also {
+//                        this.scaleX = it
+//                        this.scaleY = it
+//                    }
                 },
             contentAlignment = Alignment.Center
         ) {
-            Card(
+            Box(
                 modifier = Modifier
                     .fillMaxSize(1f)
                     .padding(start = 4.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
-                shape = RoundedCornerShape(
-                    topStart = 8.dp,
-                    topEnd = 8.dp,
-                    bottomEnd = 8.dp,
-                    bottomStart = 8.dp
-                ),
-                elevation = 8.dp
             ) {
                 QuestionLayout(
                     index,
