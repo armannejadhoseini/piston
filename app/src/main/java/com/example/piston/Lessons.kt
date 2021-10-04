@@ -50,11 +50,12 @@ fun Lessons(navController: NavController) {
 
     Scaffold(Modifier.fillMaxHeight(),
         topBar = {
-            TopAppBar(backgroundColor = Color.White) {
+            TopAppBar(backgroundColor = Color.White,
+            elevation = 0.dp) {
 
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = "دوره های آموزشی",
+                    text = stringResource(id = R.string.CourseCategoryTitle_txt),
                     textAlign = TextAlign.Center,
                     color = colorResource(id = R.color.textColor_deep_blue),
                     fontSize = 20.sp
@@ -79,6 +80,64 @@ fun Lessons(navController: NavController) {
 }
 @Composable
 fun ItemsColumn(item: lessons_item, padding: Dp, navController: NavController) {
+
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(7.dp, 15.dp, 7.dp, padding)
+            .height(180.dp)
+            .clickable {
+                navController.navigate("Lessons_menu/${item.cat}")
+            },
+        elevation = 5.dp,
+        shape = RoundedCornerShape(10.dp),
+
+        ) {
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+        ) {
+
+            Image(
+                modifier = Modifier
+                    .width(180.dp)
+                    .height(180.dp),
+                contentDescription = "",
+                contentScale = ContentScale.FillBounds,
+                painter = painterResource(id = item.vector)
+            )
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 20.dp, top = 10.dp)
+                        .height(40.dp), text = item.title,
+                    textAlign = TextAlign.End,
+                    color = colorResource(id = R.color.textColor_deep_blue),
+                    fontSize = 20.sp
+                )
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 7.dp)
+                        .height(140.dp), text = stringResource(id = item.body),
+                    textAlign = TextAlign.End,
+                    color = colorResource(id = R.color.textColor_deep_blue),
+                    fontSize = 12.sp
+                )
+            }
+        }
+    }
+}
+@Composable
+fun ItemsColumn2(item: lessons_item, padding: Dp, navController: NavController) {
 
 
     Card(
