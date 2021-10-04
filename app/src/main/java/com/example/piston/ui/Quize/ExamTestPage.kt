@@ -118,7 +118,6 @@ fun ExamTestPage(navController: NavHostController, quizList: List<QuizModel>) {
 }
 
 
-
 @Composable
 fun TopLayout(
     modifier: Modifier,
@@ -126,7 +125,11 @@ fun TopLayout(
     onFinish: () -> Unit,
     onCancel: (CountDownTimer) -> Unit
 ) {
-    Box(modifier = modifier.fillMaxSize().background(Color.White)){
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
         Row(
             modifier = modifier.padding(horizontal = 16.dp)
         ) {
@@ -163,7 +166,8 @@ fun TopLayout(
                 modifier = Modifier
                     .width(80.dp)
                     .height(40.dp)
-                    .align(CenterVertically), backgroundColor = colorResource(id = R.color.light_blue),
+                    .align(CenterVertically),
+                backgroundColor = colorResource(id = R.color.light_blue),
                 shape = RoundedCornerShape(4.dp)
             ) {
                 Box(modifier = Modifier
@@ -189,9 +193,6 @@ fun <T> List<T>.copy(): ArrayList<T> {
     }
     return list
 }
-
-
-
 
 
 @Composable
@@ -275,4 +276,26 @@ fun AutoSizeText(
             androidText(it)
         }
     })
+}
+
+@Composable
+fun AndroidText(
+    text: String,
+    modifier: Modifier,
+    color: Color,
+    gravity: Int,
+    font: Int,
+    androidText: ((AppCompatTextView) -> Unit)?
+) {
+    AndroidView(factory = {
+        AppCompatTextView(it)
+    }, update = {
+        it.text = text
+        it.typeface = ResourcesCompat.getFont(it.context, font)
+        it.setTextColor(color.toArgb())
+        it.gravity = gravity
+        if (androidText != null) {
+            androidText(it)
+        }
+    }, modifier = modifier)
 }

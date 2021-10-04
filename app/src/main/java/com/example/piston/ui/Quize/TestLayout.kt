@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -185,7 +183,8 @@ fun QuestionLayout(
     var images by remember {
         mutableStateOf(randomImages())
     }
-    Column(modifier = Modifier) {
+
+    Column(modifier = Modifier.verticalScroll(state = rememberScrollState())) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -246,7 +245,9 @@ fun QuestionLayout(
                     .padding(4.dp), contentAlignment = Alignment.CenterStart
             ) {
                 Box(
-                    modifier = Modifier.fillMaxWidth().padding(4.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp),
                     contentAlignment = Alignment.CenterEnd
                 ) {
                     Text(
@@ -300,17 +301,29 @@ fun QuestionLayout(
                         ) {
 
                             Box(
-                                modifier = Modifier.weight(1f),contentAlignment = Alignment.CenterEnd
+                                modifier = Modifier.weight(1f),
+                                contentAlignment = Alignment.CenterEnd
                             ) {
-                                Text(
+                                AndroidText(
                                     text = answers[answerIndex],
-                                    fontFamily = FontFamily(Font(R.font.shabnam)),
-                                    fontSize = dimensionResource(
-                                        id = R.dimen.bodyText
-                                    ).value.sp,
+                                    modifier = Modifier.fillMaxWidth(),
                                     color = colorResource(id = R.color.textColor_deep_blue),
-                                    textAlign = TextAlign.Right
+                                    gravity = Gravity.RIGHT or Gravity.CENTER_VERTICAL,
+                                    font = R.font.shabnam,
+                                    androidText = {
+                                        it.layoutParams = ViewGroup.LayoutParams(-1, -2)
+                                        it.textSize = 13f
+                                    }
                                 )
+//                                Text(
+//                                    text = answers[answerIndex],
+//                                    fontFamily = FontFamily(Font(R.font.shabnam)),
+//                                    fontSize = dimensionResource(
+//                                        id = R.dimen.bodyText
+//                                    ).value.sp,
+//                                    color = colorResource(id = R.color.textColor_deep_blue),
+//                                    textAlign = TextAlign.Right
+//                                )
                             }
 
                             Spacer(
