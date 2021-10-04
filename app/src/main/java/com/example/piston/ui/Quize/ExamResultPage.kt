@@ -7,17 +7,23 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavHostController
 import com.example.piston.ui.Quize.*
@@ -296,19 +302,32 @@ fun CustomButton(
         shape = shape,
         backgroundColor = backColor
     ) {
-        Box(modifier = Modifier
-            .fillMaxWidth(0.5f)
-            .fillMaxHeight(1f)) {
-            AutoSizeText(
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.5f)
+                .fillMaxHeight(1f)
+                .clickable {
+                    onClick()
+                },
+            contentAlignment = Center
+        ) {
+            Text(
                 text = title,
-                modifier = Modifier
-                    .fillMaxWidth(1f)
-                    .fillMaxHeight()
-                    .clickable {
-                        onClick()
-                    },
-                color = textColor
+                modifier = Modifier,
+                color = textColor,
+                fontFamily = FontFamily(Font(R.font.shabnam)),
+                fontSize = dimensionResource(id = R.dimen.bodyText).value.sp
             )
+//            AutoSizeText(
+//                text = title,
+//                modifier = Modifier
+//                    .fillMaxWidth(1f)
+//                    .fillMaxHeight()
+//                    .clickable {
+//                        onClick()
+//                    },
+//                color = textColor
+//            )
         }
 
     }
