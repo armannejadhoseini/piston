@@ -82,7 +82,7 @@ fun ExitDialog(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(70.dp)
+                        .height(60.dp)
                         .padding(vertical = 8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
