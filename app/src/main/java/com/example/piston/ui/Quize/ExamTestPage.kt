@@ -82,13 +82,10 @@ fun ExamTestPage(navController: NavHostController, quizList: List<QuizModel>) {
     var correctAnswer by remember {
         mutableStateOf(false)
     }
-
-
-
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color(250, 250, 255)),
+            .background(color = colorResource(id = R.color.layout_background)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TopLayout(
@@ -129,57 +126,60 @@ fun TopLayout(
     onFinish: () -> Unit,
     onCancel: (CountDownTimer) -> Unit
 ) {
-    Row(
-        modifier = modifier.padding(horizontal = 16.dp)
-    ) {
-        Card(
-            modifier = Modifier
-                .size(30.dp)
-                .align(CenterVertically),
-            shape = RoundedCornerShape(4.dp),
-            backgroundColor = colorResource(id = R.color.light_blue)
+    Box(modifier = modifier.fillMaxSize().background(Color.White)){
+        Row(
+            modifier = modifier.padding(horizontal = 16.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_back),
-                contentDescription = null,
+            Card(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(2.dp)
-                    .clickable { onBackPress() }
-            )
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxHeight()
-                .weight(4f)
-                .align(CenterVertically)
-                .padding(horizontal = 8.dp, vertical = 2.dp), contentAlignment = Center
-        ) {
-            TimerLayout(
-                20 * 60 * 1000,
-                onCancel = onCancel,
-                onFinish = onFinish
-            )
-        }
-        Card(
-            modifier = Modifier
-                .width(80.dp)
-                .height(40.dp)
-                .align(CenterVertically), backgroundColor = colorResource(id = R.color.light_blue),
-            shape = RoundedCornerShape(4.dp)
-        ) {
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .clickable { onFinish() }) {
-                AutoSizeText(
-                    text = "پایان", modifier = Modifier
+                    .size(30.dp)
+                    .align(CenterVertically),
+                shape = RoundedCornerShape(4.dp),
+                backgroundColor = colorResource(id = R.color.light_blue)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_back),
+                    contentDescription = null,
+                    modifier = Modifier
                         .fillMaxSize()
-                        .padding(4.dp), color = Color.White
+                        .padding(2.dp)
+                        .clickable { onBackPress() }
                 )
             }
-        }
+            Box(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(4f)
+                    .align(CenterVertically)
+                    .padding(horizontal = 8.dp, vertical = 2.dp), contentAlignment = Center
+            ) {
+                TimerLayout(
+                    20 * 60 * 1000,
+                    onCancel = onCancel,
+                    onFinish = onFinish
+                )
+            }
+            Card(
+                modifier = Modifier
+                    .width(80.dp)
+                    .height(40.dp)
+                    .align(CenterVertically), backgroundColor = colorResource(id = R.color.light_blue),
+                shape = RoundedCornerShape(4.dp)
+            ) {
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .clickable { onFinish() }) {
+                    AutoSizeText(
+                        text = "پایان", modifier = Modifier
+                            .fillMaxSize()
+                            .padding(4.dp), color = Color.White
+                    )
+                }
+            }
 
+        }
     }
+
 }
 
 fun <T> List<T>.copy(): ArrayList<T> {

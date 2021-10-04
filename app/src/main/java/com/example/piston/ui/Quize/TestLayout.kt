@@ -22,6 +22,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -90,7 +94,7 @@ fun initSelectedList(size: Int): ArrayList<Int> {
 @Composable
 fun PagerLayout(
     modifier: Modifier,
-    state:PagerState,
+    state: PagerState,
     list: List<QuizModel>,
     showCorrectAnswer: Boolean,
     selectedAnswerList: List<Int>,
@@ -128,7 +132,6 @@ fun PagerLayout(
             Box(
                 modifier = Modifier
                     .fillMaxSize(1f)
-                    .padding(start = 4.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
             ) {
                 QuestionLayout(
                     index,
@@ -182,154 +185,158 @@ fun QuestionLayout(
     var images by remember {
         mutableStateOf(randomImages())
     }
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(4.dp), contentAlignment = Alignment.Center
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            ComposeImageView(modifier = Modifier
+    Column(modifier = Modifier) {
+        Card(
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(4.dp)
-                .weight(2f), updateImage = { image ->
+                .height(180.dp),
+            shape = RoundedCornerShape(
+                topStart = 0.dp,
+                topEnd = 0.dp,
+                bottomStart = 8.dp,
+                bottomEnd = 8.dp
+            )
+        ) {
+            ComposeImageView(modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp), updateImage = { image ->
                 page.image?.let {
                     image.setImageBitmap(it)
                 } ?: let {
                     val drawableId = images[index]
-                    val drawable = ResourcesCompat.getDrawable(context.resources, drawableId, null)
+                    val drawable =
+                        ResourcesCompat.getDrawable(context.resources, drawableId, null)
                     image.setImageDrawable(drawable)
                 }
-
             })
-            fun List<String>.findMaxSize(): Int {
-                var size = 0
-                forEach {
-                    if (it.length > size)
-                        size = it.length
-                }
-                return size
-            }
 
-            fun List<String>.findMinSize(): Int {
-                var size = first().length
-                forEach {
-                    if (it.length < size)
-                        size = it.length
-                }
-                return size
-            }
+        }
 
-            fun Float.coerceToWeight(weight: Float = 0.7f, max: Int): Float {
-                return this.coerceIn(max * weight, max.toFloat()) / max.toFloat()
+        fun List<String>.findMaxSize(): Int {
+            var size = 0
+            forEach {
+                if (it.length > size)
+                    size = it.length
             }
+            return size
+        }
 
-            var maxLength = answers.findMaxSize()
-            var minLength = answers.findMinSize()
-            Column(
+        fun List<String>.findMinSize(): Int {
+            var size = first().length
+            forEach {
+                if (it.length < size)
+                    size = it.length
+            }
+            return size
+        }
+
+        fun Float.coerceToWeight(weight: Float = 0.7f, max: Int): Float {
+            return this.coerceIn(max * weight, max.toFloat()) / max.toFloat()
+        }
+
+        var maxLength = answers.findMaxSize()
+        var minLength = answers.findMinSize()
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(3f)
+                    .padding(4.dp), contentAlignment = Alignment.CenterStart
             ) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(
-                            maxLength
-                                .toFloat()
-                                .coerceToWeight(max = maxLength)
-                        )
-                        .padding(4.dp), contentAlignment = Alignment.CenterStart
+                    modifier = Modifier.fillMaxWidth().padding(4.dp),
+                    contentAlignment = Alignment.CenterEnd
                 ) {
-                    AutoSizeText(
+                    Text(
                         text = page.title,
-                        modifier = Modifier.fillMaxSize(),
-                        color = Color.DarkGray,
-                        gravity = Gravity.START
+                        textAlign = TextAlign.End,
+                        color = colorResource(id = R.color.textColors),
+                        fontSize = dimensionResource(id = R.dimen.font_header_2).value.sp,
+                        fontFamily = FontFamily(Font(R.font.shabnam)),
                     )
                 }
+//                    AutoSizeText(
+//                        text = page.title,
+//                        modifier = Modifier.fillMaxSize(),
+//                        color = Color.DarkGray,
+//                        gravity = Gravity.START
+//                    )
+            }
 
-                (0..3).forEach { answerIndex ->
-                    var color = if (showCorrectAnswer) {
-                        when {
-                            answerIndex == page.true_answer -> Color.Green
-                            selectedAnswer == answerIndex -> Color.Red
-                            else -> Color.Transparent
-                        }
-                    } else {
-                        if (answerIndex == selectedAnswer) {
-                            Color.DarkGray
-                        } else Color.Transparent
+            (0..3).forEach { answerIndex ->
+                var color = if (showCorrectAnswer) {
+                    when {
+                        answerIndex == page.true_answer -> Color.Green
+                        selectedAnswer == answerIndex -> Color.Red
+                        else -> Color.Transparent
                     }
-                    Card(
+                } else {
+                    if (answerIndex == selectedAnswer) {
+                        Color.DarkGray
+                    } else Color.Transparent
+                }
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 50.dp)
+                        .padding(4.dp),
+                    elevation = 4.dp,
+                    shape = RoundedCornerShape(6.dp),
+                    border = BorderStroke(width = 2.dp, color = color)
+                ) {
+                    Box(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(
-                                (answers[answerIndex].length
-                                    .toFloat()
-                                    .coerceToWeight(max = maxLength))
-                            )
-                            .padding(4.dp),
-                        elevation = 4.dp,
-                        shape = RoundedCornerShape(16.dp),
-                        border = BorderStroke(width = 2.dp, color = color)
+                            .clickable(selectable) {
+                                onSelectAnswer(answerIndex, index)
+                            }, contentAlignment = Alignment.Center
                     ) {
-                        Box(
+                        var density = LocalDensity.current
+                        Row(
                             modifier = Modifier
-                                .fillMaxSize()
-                                .clickable(selectable) {
-                                    onSelectAnswer(answerIndex, index)
-                                }, contentAlignment = Alignment.Center
+                                .fillMaxWidth()
+                                .padding(4.dp)
                         ) {
-                            var density = LocalDensity.current
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(4.dp)
+
+                            Box(
+                                modifier = Modifier.weight(1f),contentAlignment = Alignment.CenterEnd
                             ) {
-                                AutoSizeText(
+                                Text(
                                     text = answers[answerIndex],
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .align(Alignment.CenterVertically),
-                                    color = colorResource(id = R.color.textColors),
-                                    gravity = Gravity.START or Gravity.CENTER_VERTICAL
-                                ) {
-                                    it.setAutoSizeTextTypeUniformWithConfiguration(
-                                        1,
-                                        with(density) {
-                                            8.sp.toPx().toInt()
-                                        },
-                                        1,
-                                        1
-                                    )
-                                }
-
-                                Spacer(
-                                    modifier = Modifier
-                                        .fillMaxHeight()
-                                        .width(8.dp)
+                                    fontFamily = FontFamily(Font(R.font.shabnam)),
+                                    fontSize = dimensionResource(
+                                        id = R.dimen.bodyText
+                                    ).value.sp,
+                                    color = colorResource(id = R.color.textColor_deep_blue),
+                                    textAlign = TextAlign.Right
                                 )
+                            }
 
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxHeight(0.8f)
-                                        .width(30.dp)
-                                        .align(Alignment.CenterVertically),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(
-                                        text = (answerIndex + 1).toString(),
-                                        fontSize = 15.sp,
-                                        color = Color.Gray
-                                    )
-                                }
+                            Spacer(
+                                modifier = Modifier
+                                    .width(4.dp)
+                            )
+
+                            Box(
+                                modifier = Modifier
+                                    .width(30.dp)
+                                    .align(alignment = Alignment.CenterVertically),
+                                contentAlignment = Alignment.CenterEnd
+                            ) {
+                                Text(
+                                    text = (answerIndex + 1).toString(),
+                                    fontSize = dimensionResource(id = R.dimen.bodyText).value.sp,
+                                    color = Color.Gray,
+                                    fontFamily = FontFamily(Font(R.font.shabnam))
+                                )
                             }
                         }
-
                     }
-                }
 
+                }
             }
+
         }
     }
 }
