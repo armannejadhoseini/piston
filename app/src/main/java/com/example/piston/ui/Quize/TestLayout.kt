@@ -331,6 +331,10 @@ fun QuestionLayout(
                                     fontFamily = FontFamily(Font(R.font.shabnam))
                                 )
                             }
+                            Spacer(
+                                modifier = Modifier
+                                    .width(8.dp)
+                            )
                         }
                     }
 
