@@ -3,6 +3,7 @@ package com.example.piston
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.util.Log
+import android.view.View
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -28,20 +29,24 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.data.entities.Constants
+import com.example.data.entities.savedCourse
 import com.example.myapplication.domain.LectureList
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.DelicateCoroutinesApi
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 @ExperimentalPagerApi
 @Composable
-fun ReadingPage(navController: NavController, index: Int, list: List<LectureList>) {
+fun ReadingPage(navController: NavController, index: Int, list: List<LectureList>, savedPages: List<savedCourse>) {
 
     var page by remember {
         mutableStateOf(0)
@@ -59,7 +64,6 @@ fun ReadingPage(navController: NavController, index: Int, list: List<LectureList
 
         HorizontalPager(state = rememberPagerState(pageCount = 8)) {
             page = this.currentPage
-            Log.d("TAG", "ReadingPage: $page")
             Column {
                 if (page == 3) {
                     QuestionTab(
@@ -83,7 +87,7 @@ fun ReadingPage(navController: NavController, index: Int, list: List<LectureList
                         list[index].quiz2_true_answer
                     )
                 } else {
-                    LectureTab(index, list, page)
+                    LectureTab(index, list, page, savedPages)
                 }
             }
 
@@ -203,7 +207,11 @@ fun PageHeader(navController: NavController, page: Int) {
 @DelicateCoroutinesApi
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun LectureTab(index: Int, list: List<LectureList>, page: Int) {
+fun LectureTab(index: Int, list: List<LectureList>, page: Int, savedPages: List<savedCourse>) {
+    val viewModel: ViewModel = viewModel()
+    var isSaved by remember {
+        mutableStateOf(false)
+    }
 
     Column(
         modifier = Modifier
@@ -222,41 +230,92 @@ fun LectureTab(index: Int, list: List<LectureList>, page: Int) {
         }
 
         Row(modifier = Modifier.padding(vertical = 20.dp)) {
-
-                    IconButton(
-                        modifier = Modifier
-                            .height(30.dp)
-                            .padding(10.dp, 0.dp, 0.dp, 0.dp)
-                            .width(65.dp)
-                            .clip(RoundedCornerShape(4.dp))
-                            .background(colorResource(id = R.color.recyclerEdgeBlueColor)),
-                        onClick = {
-
-                        },
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                modifier = Modifier
-                                    .padding(start = 4.dp),
-                                text = "افزودن",
-                                color = Color.White,
-                                fontSize = 14.sp,
-                                fontFamily = FontFamily(Font(R.font.shabnam))
-                            )
-                            Icon(
-                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_unsave),
-                                contentDescription = "",
-                                tint = Color.Unspecified
-                            )
-
+            savedPages.let {
+                it.forEach {
+                    if (it.id + 1 == list[index].id && it.type == list[index].type && it.page == page) {
+                        isSaved = true
+                        Log.d("TAG", "LectureTabPage: $page")
+                    }
+                }
+            }
+            if (isSaved == true) {
+                IconButton(
+                    modifier = Modifier
+                        .height(30.dp)
+                        .padding(10.dp, 0.dp, 0.dp, 0.dp)
+                        .width(65.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(colorResource(id = R.color.recyclerEdgeBlueColor)),
+                    onClick = {
+                        GlobalScope.launch(Dispatchers.IO) {
+                            viewModel.deleteSaved(list[index].id,list[index].type,page)
                         }
+                        isSaved = false
+                    },
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(start = 4.dp),
+                            text = "حذف",
+                            color = Color.White,
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily(Font(R.font.shabnam))
+                        )
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_save),
+                            contentDescription = "",
+                            tint = Color.Unspecified
+                        )
 
                     }
+
+                }
+            }
+            if(isSaved == false) {
+                IconButton(
+                    modifier = Modifier
+                        .height(30.dp)
+                        .padding(10.dp, 0.dp, 0.dp, 0.dp)
+                        .width(65.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(colorResource(id = R.color.recyclerEdgeBlueColor)),
+                    onClick = {
+                        GlobalScope.launch(Dispatchers.IO) {
+                            viewModel.save(list[index].id,list[index].type,page)
+                        }
+                        isSaved = true
+                    },
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .padding(start = 4.dp),
+                            text = "افزودن",
+                            color = Color.White,
+                            fontSize = 14.sp,
+                            fontFamily = FontFamily(Font(R.font.shabnam))
+                        )
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_unsave),
+                            contentDescription = "",
+                            tint = Color.Unspecified
+                        )
+
+                    }
+
+                }
+            }
 
             Text(
                 modifier = Modifier
@@ -270,7 +329,7 @@ fun LectureTab(index: Int, list: List<LectureList>, page: Int) {
                 fontFamily = FontFamily(Font(R.font.shabnam))
             )
         }
-        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl ) {
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()

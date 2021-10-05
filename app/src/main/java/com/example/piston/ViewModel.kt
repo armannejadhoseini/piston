@@ -9,6 +9,8 @@ import com.example.data.BoardMapper_Imp
 import com.example.data.LectureMapper_Imp
 import com.example.data.QuizTestModelMapper_Imp
 import com.example.data.db.RoomDatabase
+import com.example.data.db.RoomSavedCourse
+import com.example.data.entities.savedCourse
 import com.example.data.entities.toAllTestList
 import com.example.data.entities.toTestPercent
 import com.example.myapplication.domain.BoardList
@@ -19,6 +21,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.flow
 
 class ViewModel(application: Application) : AndroidViewModel(application) {
+
     private val lectureMapper = LectureMapper_Imp()
     private val boardMapper = BoardMapper_Imp()
     private val applicationContext = application
@@ -26,6 +29,32 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     private var theoryList = listOf<LectureList>()
     private var allBoardList = listOf<BoardList>()
     private val quizTestMapper_Imp = QuizTestModelMapper_Imp()
+
+    private val db = Room.databaseBuilder(
+        applicationContext.applicationContext,
+        RoomSavedCourse::class.java,
+        "saved_course"
+    ).build()
+    private var savedPages = listOf<savedCourse>()
+
+    fun getIsSaved(): List<savedCourse> {
+        return savedPages
+    }
+    fun isSaved() {
+        viewModelScope.launch(Dispatchers.IO) {
+            savedPages = db.savedCoursesDao().isSaved()
+        }
+    }
+    fun deleteSaved(id: Int, type: Int, page: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            db.savedCoursesDao().deletePage(savedCourse(id,type,page))
+        }
+    }
+    fun save(id: Int, type: Int, page: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            db.savedCoursesDao().savePage(savedCourse(id,type,page))
+        }
+    }
 
     fun examList(number: Int) = flow<List<QuizModel>?> {
         var examList = Database.getInstance(getApplication()).listDao().getExamList(number.toLong())
