@@ -54,7 +54,6 @@ class MainActivity : ComponentActivity() {
     @ExperimentalPagerApi
     @Composable
     fun Ui() {
-
         val navController = rememberNavController()
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val (showBottom, showBottomClick) = remember {
