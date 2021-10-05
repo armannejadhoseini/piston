@@ -1,5 +1,6 @@
 package com.example.piston
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.compose.foundation.background
@@ -17,10 +18,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -30,11 +35,14 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.skydoves.landscapist.glide.GlideImage
+import kotlinx.coroutines.DelicateCoroutinesApi
+
 
 
 @ExperimentalPagerApi
 @Composable
 fun ReadingPage(navController: NavController, index: Int, list: List<LectureList>) {
+
     var page by remember {
         mutableStateOf(0)
     }
@@ -136,22 +144,24 @@ fun PageHeader(navController: NavController, page: Int) {
                         .padding(start = 7.dp)
                         .width(size)
                         .height(size)
-
                 ) {
-                    Text(
-                        modifier = Modifier
-                            .background(color)
-                            .width(size)
-                            .height(size),
-                        text = when(index) {
-                                           4-> "?"
-                                            7-> "?"
-                            else -> index.toString()
-                                           },
-                        fontSize = 12.sp,
-                        textAlign = TextAlign.Center,
-                        color = colorResource(id = R.color.white)
-                    )
+                    Column(verticalArrangement = Arrangement.Center) {
+                        Text(
+                            modifier = Modifier
+                                .background(color)
+                                .width(size)
+                                .height(size),
+                            text = when (index) {
+                                4 -> "?"
+                                7 -> "?"
+                                else -> index.toString()
+                            },
+                            fontSize = 12.sp,
+                            textAlign = TextAlign.Center,
+                            color = colorResource(id = R.color.white),
+                            fontFamily = FontFamily(Font(R.font.shabnam))
+                        )
+                    }
                 }
             }
 
@@ -190,16 +200,17 @@ fun PageHeader(navController: NavController, page: Int) {
     }
 }
 
+@DelicateCoroutinesApi
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun LectureTab(index: Int, list: List<LectureList>, page: Int) {
-    Log.d("TAG", "LectureTab: $page")
+
     Column(
         modifier = Modifier
             .fillMaxHeight()
             .fillMaxWidth()
     ) {
         Card(elevation = 4.dp) {
-
 
             GlideImage(
                 modifier = Modifier
@@ -211,38 +222,42 @@ fun LectureTab(index: Int, list: List<LectureList>, page: Int) {
         }
 
         Row(modifier = Modifier.padding(vertical = 20.dp)) {
-            IconButton(
-                modifier = Modifier
-                    .height(30.dp)
-                    .padding(10.dp, 0.dp, 0.dp, 0.dp)
-                    .width(65.dp)
-                    .clip(RoundedCornerShape(4.dp))
-                    .background(colorResource(id = R.color.recyclerEdgeBlueColor)),
-                onClick = { /*TODO*/ },
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
+
+                    IconButton(
                         modifier = Modifier
-                            .padding(start = 4.dp)
-                            .width(40.dp),
-                        text = "افزودن",
-                        color = Color.White,
-                        fontSize = 14.sp
-                    )
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_unsave),
-                        contentDescription = "",
-                        tint = Color.Unspecified
-                    )
+                            .height(30.dp)
+                            .padding(10.dp, 0.dp, 0.dp, 0.dp)
+                            .width(65.dp)
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(colorResource(id = R.color.recyclerEdgeBlueColor)),
+                        onClick = {
 
-                }
+                        },
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                modifier = Modifier
+                                    .padding(start = 4.dp),
+                                text = "افزودن",
+                                color = Color.White,
+                                fontSize = 14.sp,
+                                fontFamily = FontFamily(Font(R.font.shabnam))
+                            )
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_unsave),
+                                contentDescription = "",
+                                tint = Color.Unspecified
+                            )
 
-            }
+                        }
+
+                    }
+
             Text(
                 modifier = Modifier
                     .fillMaxWidth(1.0F)
@@ -252,28 +267,32 @@ fun LectureTab(index: Int, list: List<LectureList>, page: Int) {
                 textAlign = TextAlign.End,
                 fontSize = 19.sp,
                 color = colorResource(id = R.color.textColors),
+                fontFamily = FontFamily(Font(R.font.shabnam))
             )
         }
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState(0))
-                .padding(end = 10.dp)
-                .fillMaxHeight(1.0F),
-            text = when (page) {
-                0 -> list[index].page1
-                1 -> list[index].page2
-                2 -> list[index].page3
-                4 -> list[index].page4
-                5 -> list[index].page5
-                7 -> list[index].page6
+        CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState(0))
+                    .padding(start = 10.dp)
+                    .fillMaxHeight(1.0F),
+                fontFamily = FontFamily(Font(R.font.shabnam)),
+                text = when (page) {
+                    0 -> list[index].page1
+                    1 -> list[index].page2
+                    2 -> list[index].page3
+                    4 -> list[index].page4
+                    5 -> list[index].page5
+                    7 -> list[index].page6
 
-                else -> list[index].page1
-            },
-            textAlign = TextAlign.End,
-            fontSize = 15.sp,
-            color = colorResource(id = R.color.textColors)
-        )
+                    else -> list[index].page1
+                },
+                textAlign = TextAlign.Start,
+                fontSize = 15.sp,
+                color = colorResource(id = R.color.textColors)
+            )
+        }
     }
 }
 
@@ -306,7 +325,9 @@ fun QuestionTab(
             text = title,
             color = colorResource(id = R.color.textColors),
             fontSize = 20.sp,
-            textAlign = TextAlign.End
+            textAlign = TextAlign.End,
+            fontFamily = FontFamily(Font(R.font.shabnam))
+
         )
 
         var selectable by remember {
@@ -385,7 +406,9 @@ fun QuestionTab(
                             true_answer -> colorResource(id = textColorTrue)
                             else -> colorResource(id = textColor)
                         },
-                        textAlign = TextAlign.End
+                        textAlign = TextAlign.End,
+                        fontFamily = FontFamily(Font(R.font.shabnam))
+
                     )
 
                 }

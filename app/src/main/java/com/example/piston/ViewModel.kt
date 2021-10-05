@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
-import com.example.data.AllTestModelMapper_Imp
 import com.example.data.BoardMapper_Imp
 import com.example.data.LectureMapper_Imp
 import com.example.data.QuizTestModelMapper_Imp
@@ -27,7 +26,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     private var theoryList = listOf<LectureList>()
     private var allBoardList = listOf<BoardList>()
     private val quizTestMapper_Imp = QuizTestModelMapper_Imp()
-    private val allTestModelMapper_Imp = AllTestModelMapper_Imp()
+
     fun examList(number: Int) = flow<List<QuizModel>?> {
         var examList = Database.getInstance(getApplication()).listDao().getExamList(number.toLong())
         emit(quizTestMapper_Imp.AllTestEntityToTestModel(examList.toAllTestList()))

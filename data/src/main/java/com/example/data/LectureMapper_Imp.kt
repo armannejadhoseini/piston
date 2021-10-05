@@ -13,6 +13,7 @@ class LectureMapper_Imp : LectureMapper {
                 LectureList(
                     item.id.toInt(),
                     BitmapFactory.decodeByteArray(item.image,0,item.image!!.size),
+                    item.type!!.toInt(),
                     item.title,
                     item.page1,
                     String(item.page2),
@@ -48,6 +49,7 @@ class LectureMapper_Imp : LectureMapper {
                 LectureList(
                     item.id.toInt(),
                     BitmapFactory.decodeByteArray(item.image,0,item.image!!.size),
+                    item.type!!.toInt(),
                     item.title,
                     item.page1,
                     item.page2,

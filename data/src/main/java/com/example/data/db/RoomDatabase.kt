@@ -2,10 +2,7 @@ package com.example.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.data.entities.ExamEntity
-import com.example.data.entities.ExamPercentEntity
-import com.example.data.entities.QuizEntity
-import com.example.data.entities.QuizPercentEntity
+import com.example.data.entities.*
 
 @Database(entities = arrayOf(
 //    AllTestEntity::class,

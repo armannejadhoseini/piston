@@ -18,6 +18,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -74,7 +76,9 @@ fun LessonsList(
                         text = "$item_name",
                         textAlign = TextAlign.End,
                         fontSize = 20.sp,
-                        color = colorResource(id = R.color.textColor_deep_blue)
+                        color = colorResource(id = R.color.textColor_deep_blue),
+                        fontFamily = FontFamily(Font(R.font.shabnam))
+
 
                     )
                 }
@@ -144,7 +148,8 @@ fun SubMenu(
                     text = "کوییز   |   دوره", modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 7.dp, bottom = 5.dp)
-                        .width(20.dp)
+                        .width(20.dp),
+                    fontFamily = FontFamily(Font(R.font.shabnam))
                 )
             }
 
@@ -158,6 +163,7 @@ fun SubMenu(
                 textAlign = TextAlign.End,
                 fontSize = 18.sp,
                 color = colorResource(id = R.color.textColor_deep_blue),
+                fontFamily = FontFamily(Font(R.font.shabnam))
             )
 
             GlideImage(modifier = Modifier.fillMaxWidth(0.9F)

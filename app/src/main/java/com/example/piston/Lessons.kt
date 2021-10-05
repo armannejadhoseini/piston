@@ -8,12 +8,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.*
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -48,46 +53,49 @@ val lessons_list = listOf(
 @Composable
 fun Lessons(navController: NavController) {
 
-    Scaffold(Modifier.fillMaxHeight(),
-        topBar = {
-            TopAppBar(backgroundColor = Color.White,
-            elevation = 0.dp) {
+        Scaffold(Modifier.fillMaxHeight(),
+            topBar = {
+                TopAppBar(
+                    backgroundColor = Color.White,
+                    elevation = 0.dp
+                ) {
 
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(id = R.string.CourseCategoryTitle_txt),
-                    textAlign = TextAlign.Center,
-                    color = colorResource(id = R.color.textColor_deep_blue),
-                    fontSize = 20.sp
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.CourseCategoryTitle_txt),
+                        textAlign = TextAlign.Center,
+                        color = colorResource(id = R.color.textColor_deep_blue),
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily(Font(R.font.shabnam))
 
-                )
-            }
-        }
-    ) {
-
-        LazyColumn {
-            items(lessons_list) { item ->
-                if (item.id%2 == 0){
-                    if (item.id == 2) {
-                        ItemsColumn(item = item, 80.dp, navController)
-                    } else {
-                        ItemsColumn(item = item, 0.dp, navController)
-                    }
+                    )
                 }
-                else {
-                    if (item.id == 2) {
-                        ItemsColumn2(item = item, 80.dp, navController)
-                    } else {
-                        ItemsColumn2(item = item, 0.dp, navController)
-                    }
-                }
-
             }
+        ) {
+
+            LazyColumn {
+                items(lessons_list) { item ->
+                    if (item.id % 2 == 0) {
+                        if (item.id == 2) {
+                            ItemsColumn(item = item, 80.dp, navController)
+                        } else {
+                            ItemsColumn(item = item, 0.dp, navController)
+                        }
+                    } else {
+                        if (item.id == 2) {
+                            ItemsColumn2(item = item, 80.dp, navController)
+                        } else {
+                            ItemsColumn2(item = item, 0.dp, navController)
+                        }
+                    }
+
+                }
+            }
+
+
         }
-
-
-    }
 }
+
 @Composable
 fun ItemsColumn(item: lessons_item, padding: Dp, navController: NavController) {
 
@@ -119,33 +127,39 @@ fun ItemsColumn(item: lessons_item, padding: Dp, navController: NavController) {
                 contentScale = ContentScale.FillBounds,
                 painter = painterResource(id = item.vector)
             )
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .height(180.dp)
-            ) {
-                Text(
-                    modifier = Modifier
+                Column(
+                    Modifier
                         .fillMaxWidth()
-                        .padding(end = 20.dp, top = 10.dp)
-                        .height(40.dp), text = item.title,
-                    textAlign = TextAlign.End,
-                    color = colorResource(id = R.color.textColor_deep_blue),
-                    fontSize = 20.sp
-                )
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 7.dp)
-                        .height(140.dp), text = stringResource(id = item.body),
-                    textAlign = TextAlign.End,
-                    color = colorResource(id = R.color.textColor_deep_blue),
-                    fontSize = 12.sp
-                )
-            }
+                        .height(180.dp)
+                ) {
+
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(end = 20.dp, top = 10.dp)
+                            .height(40.dp), text = item.title,
+                        textAlign = TextAlign.End,
+                        color = colorResource(id = R.color.textColor_deep_blue),
+                        fontSize = 20.sp,
+                        fontFamily = FontFamily(Font(R.font.shabnam))
+
+                    )
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 7.dp)
+                            .height(140.dp), text = stringResource(id = item.body),
+                        textAlign = TextAlign.End,
+                        color = colorResource(id = R.color.textColor_deep_blue),
+                        fontSize = 10.sp,
+                        fontFamily = FontFamily(Font(R.font.shabnam))
+                    )
+                }
+
         }
     }
 }
+
 @Composable
 fun ItemsColumn2(item: lessons_item, padding: Dp, navController: NavController) {
     Card(
@@ -178,7 +192,8 @@ fun ItemsColumn2(item: lessons_item, padding: Dp, navController: NavController) 
                         .height(40.dp), text = item.title,
                     textAlign = TextAlign.End,
                     color = colorResource(id = R.color.textColor_deep_blue),
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(R.font.shabnam))
                 )
                 Text(
                     modifier = Modifier
@@ -187,7 +202,8 @@ fun ItemsColumn2(item: lessons_item, padding: Dp, navController: NavController) 
                         .height(140.dp), text = stringResource(id = item.body),
                     textAlign = TextAlign.End,
                     color = colorResource(id = R.color.textColor_deep_blue),
-                    fontSize = 12.sp
+                    fontSize = 10.sp,
+                    fontFamily = FontFamily(Font(R.font.shabnam))
                 )
             }
             Image(

@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 data class LectureList(
     val id: Int,
     val image: Bitmap,
+    val type: Int,
     val title: String,
     val page1: String,
     val page2: String,

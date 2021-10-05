@@ -2,11 +2,9 @@ package com.example.data.db
 
 import androidx.annotation.IntRange
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
-import com.example.data.entities.ExamEntity
-import com.example.data.entities.ExamPercentEntity
-import com.example.data.entities.QuizEntity
-import com.example.data.entities.QuizPercentEntity
+import com.example.data.entities.*
 import com.example.myapplication.domain.*
 
 @Dao
@@ -48,5 +46,6 @@ interface listDao {
         @IntRange(from = 1, to = 20)
         examNumber: Long
     ): List<ExamEntity>
+
 
 }
